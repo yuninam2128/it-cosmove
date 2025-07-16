@@ -1,53 +1,15 @@
-import React, { useCallback } from "react";
+import { useCallback } from "react";
 import { useHistory } from "react-router-dom";
-import { Handle, Position } from 'reactflow';
 import ReactFlow, {
   useNodesState,
   useEdgesState,
   addEdge,
 } from "reactflow";
 import "reactflow/dist/style.css";
-import "./styles.css";
+import "./Mindmap.css";
 
-const CENTER_NODE_ID = "center";
-
-const initialNodes = [
-  {
-    id: CENTER_NODE_ID,
-    type: "default",
-    data: { label: "Center Node", page: "/center" },
-    position: { x: 300, y: 200 },
-    draggable: false,
-    className: "my-node center-node",
-  },
-  {
-    id: "1",
-    type: "default",
-    data: { label: "Node 1"},
-    position: { x: 100, y: 100 },
-    className: "my-node",
-  },
-  {
-    id: "2",
-    type: "default",
-    data: { label: "Node 2"},
-    position: { x: 500, y: 100 },
-    className: "my-node",
-  },
-];
-
-const initialEdges = [
-  {
-    id: "e-center-1",
-    source: CENTER_NODE_ID,
-    target: "1",
-  },
-  {
-    id: "e-center-2",
-    source: CENTER_NODE_ID,
-    target: "2",
-  },
-];
+import {initialNodes, CENTER_NODE_ID} from "../data/Mind-nodes";
+import {initialEdges} from "../data/Mind-edges";
 
 export default function Mindmap() {
   const history = useHistory();
