@@ -1,5 +1,7 @@
 import { useCallback } from "react";
 import { useHistory } from "react-router-dom";
+import { initialNodes, CENTER_NODE_ID } from "../data/Mind-nodes";
+import { initialEdges } from "../data/Mind-edges";
 import ReactFlow, {
   useNodesState,
   useEdgesState,
@@ -8,12 +10,8 @@ import ReactFlow, {
 import "reactflow/dist/style.css";
 import "./Mindmap.css";
 
-import {initialNodes, CENTER_NODE_ID} from "../data/Mind-nodes";
-import {initialEdges} from "../data/Mind-edges";
-
-export default function Mindmap() {
+export default function Mindmap(props) {
   const history = useHistory();
-
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
 
@@ -50,27 +48,29 @@ export default function Mindmap() {
     const newEdge = {
       id: `e-center-${newId}`,
       source: CENTER_NODE_ID,
-      target: newId
+      target: newId,
     };
 
     setNodes((nds) => [...nds, newNode]);
     setEdges((eds) => [...eds, newEdge]);
   };
 
+  // props.onAddNode를 전달해주었다면 Mindmap 외부에서 trigger 할 수 있게 연결
+  if (props.onReady) {
+    props.onReady({
+      handleAddNode,
+    });
+  }
+
   return (
-    <div style={{ width: "100%", height: "100vh" }}>
-      <button onClick={handleAddNode} style={{ margin: 10, zIndex: 10 }}>
-        Add Node
-      </button>
-      <ReactFlow
-        nodes={nodes}
-        edges={edges}
-        onNodesChange={onNodesChange}
-        onEdgesChange={onEdgesChange}
-        onConnect={onConnect}
-        onNodeClick={onNodeClick}
-        fitView
-      />
-    </div>
+    <ReactFlow
+      nodes={nodes}
+      edges={edges}
+      onNodesChange={onNodesChange}
+      onEdgesChange={onEdgesChange}
+      onConnect={onConnect}
+      onNodeClick={onNodeClick}
+      fitView
+    />
   );
 }
